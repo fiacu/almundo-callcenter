@@ -3,6 +3,11 @@ package com.almundo.callcenter.model.callstates;
 import com.almundo.callcenter.model.Call;
 import com.almundo.callcenter.model.CallState;
 
+/**
+ * Estado de una llamada en espera de ser asignada a un empleado
+ * @author fmoran
+ *
+ */
 public class WaitingState implements CallState {
     private Call call;
     public WaitingState(Call call) {

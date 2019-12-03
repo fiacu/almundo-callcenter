@@ -2,7 +2,6 @@ package com.almundo.callcenter;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
@@ -20,6 +19,10 @@ public class BusinessTest {
         dispatcher.setCallcenter(callcenter);
     }
     
+    /**
+     * Prueba para comprobación del orden de asignacion segun tipo de empleado
+     * @throws InterruptedException
+     */
     @Test
     public void testEmployeeOrderAssignation() throws InterruptedException {
         //SUBSCRIBE EMPLOYEES
@@ -55,6 +58,10 @@ public class BusinessTest {
         assertTrue(call4.getEmployee().getType().equalsIgnoreCase(Employee.DIRECTOR));
     }
 
+    /**
+     * Prueba de duración de una llamada
+     * @throws InterruptedException
+     */
     @Test
     public void testCallDuration() throws InterruptedException {
         Employee director = new Employee(Employee.DIRECTOR);

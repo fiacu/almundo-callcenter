@@ -1,5 +1,10 @@
 package com.almundo.callcenter.model;
 
+/**
+ * Clase que representa a un empleado
+ * @author fmoran
+ *
+ */
 public class Employee {
     public static final String OPERATOR = "Operator";
     public static final String SUPEVISOR = "Supervisor";

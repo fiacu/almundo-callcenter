@@ -27,7 +27,7 @@ public class CallCenterApp {
         }
     }
     /**
-     * 
+     * Java app para simulacion de procesamiento de llamadas
      * @param args
      */
     public static void main(String[] args) {

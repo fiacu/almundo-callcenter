@@ -9,6 +9,11 @@ import com.almundo.callcenter.model.callstates.InitialState;
 import com.almundo.callcenter.model.callstates.OncallState;
 import com.almundo.callcenter.model.callstates.WaitingState;
 
+/**
+ * Clase que representa una llamada telefonica
+ * @author fmoran
+ *
+ */
 public class Call {
     private OncallState onCallState;
     private WaitingState waitingState;
@@ -76,6 +81,11 @@ public class Call {
     public void setState(CallState state) {
         this.state = state;
     }
+    /**
+     * Inicia una llamada telefonica
+     * Setea fecha inicial al momento de ejeucion y asigna empleado.
+     * @param employee
+     */
     public void connect(Employee employee) {
         setStartDate(new Date());
         if(employee != null) {
@@ -88,10 +98,17 @@ public class Call {
             state.disconnect();
         }
     }
+    /**
+     * Finaliza una llamada
+     * Cambia a su estado a finalizada.
+     */
     public void disconnect() {
         setEndDate(new Date());
         state.disconnect();
     }
+    /**
+     * Actualiza el estado de una llamada a en espera
+     */
     public void holdon() {
         state.holdon();
     }

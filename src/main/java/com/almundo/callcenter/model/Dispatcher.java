@@ -5,7 +5,13 @@ import java.util.logging.Logger;
 import com.almundo.callcenter.CallCenterApp;
 import com.almundo.callcenter.helpers.SyncCounter;
 
+/***
+ * Clase encargada de gestionar las llamadas (Singleton)
+ * @author fmoran
+ *
+ */
 public class Dispatcher {
+    private final int MAX_CAPACITY = 10;
     private volatile static Dispatcher uniqueInstance;
     private static final Logger logger = Logger
             .getLogger(CallCenterApp.class.getName());
@@ -26,6 +32,14 @@ public class Dispatcher {
         return uniqueInstance;
     }
     
+    /**
+     * Asigna la llamada a un empleado y ejecutarla.
+     * Controla la sobrecarga {@link Dispatcher#isOverloaded()} del dispather y rechaza la llamada en caso de estarlo.
+     * Aguarda a que un empleado se subscriba para ejecutar la llamada 
+     * @see CallCenter#subscribe(Employee)
+     * @param call
+     * @throws InterruptedException
+     */
     public void dispatchCall(Call call) throws InterruptedException {
         Employee employee = null;
         logger.info("Incoming Call : " + call.toString() + ".");
@@ -47,19 +61,31 @@ public class Dispatcher {
         callCenter.subscribe(employee);
     }
 
+    /**
+     * En caso de no existir empleados disponibles, la llamada queda en espera
+     * @param call
+     */
     private void onholdCall(Call call) {
         logger.info("Call : " + call.toString()
         + " - No Employee available, please hold on.");
         call.holdon();
     }
 
+    /**
+     * Rechaza una llamada si el dispatcher esta sobrecargado
+     * @param call
+     */
     private void rejectCall(Call call) {
         logger.info("Dispatcher overloaded, try again later.");
         call.disconnect();
     }
 
+    /**
+     * Resuelve si el despatcher esta sobrecargado
+     * @return true si el dispatcher esta sobrecargado
+     */
     private boolean isOverloaded() {
-        return inboundCallsCounter.getValue() > 9;
+        return inboundCallsCounter.getValue() >= MAX_CAPACITY;
     }
     
     public void setCallcenter(CallCenter callcenter) {

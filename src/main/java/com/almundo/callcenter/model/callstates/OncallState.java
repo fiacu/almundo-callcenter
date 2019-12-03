@@ -3,6 +3,11 @@ package com.almundo.callcenter.model.callstates;
 import com.almundo.callcenter.model.Call;
 import com.almundo.callcenter.model.CallState;
 
+/**
+ * Estado de una llamada en ejecución
+ * @author fmoran
+ *
+ */
 public class OncallState implements CallState {
     private Call call;
 

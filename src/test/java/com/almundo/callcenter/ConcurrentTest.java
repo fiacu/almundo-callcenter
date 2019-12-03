@@ -1,6 +1,7 @@
 package com.almundo.callcenter;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.almundo.callcenter.helpers.HelperEmployeeTypes;
 import com.almundo.callcenter.model.Call;
@@ -37,7 +38,7 @@ public class ConcurrentTest extends TestCase {
     }
 
     /**
-     *
+     * Test unitario donde se simula la creación de 10 llamadas en simultaneo
      * @throws InterruptedException 
      */
     public void testApp() throws InterruptedException {
@@ -45,6 +46,7 @@ public class ConcurrentTest extends TestCase {
         CountDownLatch startSignal = new CountDownLatch(1);
         CountDownLatch doneSignal = new CountDownLatch(maxCalls);
         InboundService inboundService = new InboundService(dispatcher);
+        AtomicReference<AssertionError> failure = new AtomicReference<>();
 
         dispatcher.setCallcenter(callcenter);
         for(int i=0; i < maxCalls; i++) {
@@ -52,9 +54,12 @@ public class ConcurrentTest extends TestCase {
         }
         for(int i=0; i < maxCalls; i++) {
             Call call = new Call();
-            new Thread(new InboundTestThread(call, inboundService, startSignal, doneSignal)).start();
+            new Thread(new InboundTestThread(call, inboundService, startSignal, doneSignal, failure)).start();
         }
         startSignal.countDown();
         doneSignal.await();
+        //SI HUBO ALGUN ERROR EN UN HILO
+        if (failure.get() != null)
+            throw failure.get();
     }
 }

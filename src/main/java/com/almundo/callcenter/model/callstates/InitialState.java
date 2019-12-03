@@ -3,6 +3,11 @@ package com.almundo.callcenter.model.callstates;
 import com.almundo.callcenter.model.Call;
 import com.almundo.callcenter.model.CallState;
 
+/**
+ * Estado inicial de toda llamada
+ * @author fmoran
+ *
+ */
 public class InitialState implements CallState {
     private Call call;
 
