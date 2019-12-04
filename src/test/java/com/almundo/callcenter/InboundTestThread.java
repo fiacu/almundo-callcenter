@@ -13,16 +13,18 @@ public class InboundTestThread implements Runnable {
     private final CountDownLatch doneSignal;
     private final InboundService service;
     private final Call call;
+    private boolean assertEmployee;
     AtomicReference<AssertionError> failure;
 
     public InboundTestThread(Call call, InboundService service,
             CountDownLatch startSignal, CountDownLatch doneSignal,
-            AtomicReference<AssertionError> failure) {
+            AtomicReference<AssertionError> failure, boolean assertEmployee) {
         this.call = call;
         this.service = service;
         this.startSignal = startSignal;
         this.doneSignal = doneSignal;
         this.failure = failure;
+        this.assertEmployee = assertEmployee;
     }
     public void run() {
         try {
@@ -30,9 +32,12 @@ public class InboundTestThread implements Runnable {
             service.dispatchCall(call);
             try {
                 //Se asigno un empleado y finalizo la llamada
-                assertTrue(call.getEmployee() != null);
+                if(assertEmployee) {
+                    assertTrue(call.getEmployee() != null);
+                    assertTrue(call.getEndDate().after(call.getStartDate()));
+                }
                 assertTrue(call.getEndDate() != null);
-                assertTrue(call.getEndDate().after(call.getStartDate()));
+                
             }
             catch (AssertionError e) {
                 failure.set(e);

@@ -43,22 +43,23 @@ public class Dispatcher {
     public void dispatchCall(Call call) throws InterruptedException {
         Employee employee = null;
         logger.info("Incoming Call : " + call.toString() + ".");
-        synchronized (callCenter.getAvailableEmployees()) {
-            if(isOverloaded()) {
-                rejectCall(call);
-                return;
-            }
-            inboundCallsCounter.increment();
-            while (!callCenter.hasNextEmployee()) {
-                onholdCall(call);
-                callCenter.getAvailableEmployees().wait();
-            }
-            employee = callCenter.nextEmployee();
-            callCenter.unsubscribe(employee);
+        if(isOverloaded()) {
+            rejectCall(call);
         }
-        call.connect(employee);
-        inboundCallsCounter.decrement();
-        callCenter.subscribe(employee);
+        else {
+            synchronized (callCenter.getAvailableEmployees()) {
+                inboundCallsCounter.increment();
+                while (!callCenter.hasNextEmployee()) {
+                    onholdCall(call);
+                    callCenter.getAvailableEmployees().wait();
+                }
+                employee = callCenter.nextEmployee();
+                callCenter.unsubscribe(employee);
+            }
+            call.connect(employee);
+            inboundCallsCounter.decrement();
+            callCenter.subscribe(employee);
+        }
     }
 
     /**

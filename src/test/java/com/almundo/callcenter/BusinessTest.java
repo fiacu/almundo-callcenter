@@ -25,6 +25,7 @@ public class BusinessTest {
      */
     @Test
     public void testEmployeeOrderAssignation() throws InterruptedException {
+        callcenter.unsubscribeAll();
         //SUBSCRIBE EMPLOYEES
         Employee director = new Employee(Employee.DIRECTOR);
         callcenter.subscribe(director);
@@ -64,6 +65,7 @@ public class BusinessTest {
      */
     @Test
     public void testCallDuration() throws InterruptedException {
+        callcenter.unsubscribeAll();
         Employee director = new Employee(Employee.DIRECTOR);
         callcenter.subscribe(director);
         Call call = new Call();

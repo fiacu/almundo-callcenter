@@ -21,11 +21,9 @@ public class CallCenter {
      * Los empleados se agrupan segun su tipo.
      */
     private CallCenter() {
-        for(String employeeType : HelperEmployeeTypes.getEmployeeTypes()) {
-            availableEmployees.put(employeeType, Collections.synchronizedList(new ArrayList<Employee>()));
-        }
+        unsubscribeAll();
     }
-    
+
     public LinkedHashMap<String, List<Employee>> getAvailableEmployees() {
         return availableEmployees;
     }
@@ -62,6 +60,16 @@ public class CallCenter {
     public void unsubscribe(Employee employee) {
         if(availableEmployees.get(employee.getType()) != null)
             availableEmployees.get(employee.getType()).remove(employee);
+    }
+    
+    /**
+     * Reinicia la lista de empleados disponibles
+     */
+    public void unsubscribeAll() {
+        availableEmployees = new LinkedHashMap<String, List<Employee>>();
+        for(String employeeType : HelperEmployeeTypes.getEmployeeTypes()) {
+            availableEmployees.put(employeeType, Collections.synchronizedList(new ArrayList<Employee>()));
+        }
     }
     
     /**

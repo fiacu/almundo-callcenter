@@ -29,7 +29,6 @@ public class WaitingState implements CallState {
 
     @Override
     public void holdon() {
-        System.out.println("Call " + call.toString() + " waiting.");
-        call.setState(call.getWaitingState());
+        System.out.println("Call already waiting.");
     }
 }
